@@ -2,6 +2,10 @@
 
 <p align="center">
   <img src="docs/replit-logo.png" alt="Replit" width="200">
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://nordpoints.com">
+    <img src="https://nordpoints.com/nordpoints-logo.svg" alt="Nordpoints" width="200">
+  </a>
 </p>
 
 # سدرة | تجربة جمال متكاملة
