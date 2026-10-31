@@ -1,0 +1,52 @@
+<section class="section editorial editorial--{{ section.settings.style }}">
+  <div class="container editorial__grid{% if section.settings.image_first %} editorial__grid--flip{% endif %}">
+    <div class="editorial__media">
+      {%- if section.settings.image != blank -%}
+        {%- assign image_alt = section.settings.image.alt | default: '' -%}{{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '500,800,1200', sizes: '(min-width: 990px) 50vw, 100vw', alt: image_alt }}
+      {%- else -%}
+        <img src="{{ 'editorial-ritual.jpg' | asset_url }}" alt="" width="1024" height="1024" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="editorial__copy">
+      {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+      <h2 class="section-title section-title--lg">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<div class="rte editorial__text">{{ section.settings.text }}</div>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <ol class="steps">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}>
+              {%- if section.settings.style == 'values' -%}<span class="steps__icon">{% render 'icon', name: block.settings.icon %}</span>{%- else -%}<span class="steps__num">{{ forloop.index }}</span>{%- endif -%}
+              <div><strong>{{ block.settings.title }}</strong><p class="meta">{{ block.settings.text }}</p></div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}<a href="{{ section.settings.button_link }}" class="link-arrow">{{ section.settings.button_label }}{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "قسم تحريري",
+  "settings": [
+    { "type": "select", "id": "style", "label": "النمط", "options": [{ "value": "routine", "label": "خطوات الروتين" }, { "value": "values", "label": "قيم العلامة" }, { "value": "story", "label": "قصة" }], "default": "routine" },
+    { "type": "text", "id": "kicker", "label": "عنوان صغير", "default": "اكتشفي روتين العناية" },
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "روتينكِ يبدأ من الاختيار الصحيح." },
+    { "type": "richtext", "id": "text", "label": "النص", "default": "<p>اكتشفي منتجات تساعدكِ على بناء روتين عناية يناسب احتياجاتكِ.</p>" },
+    { "type": "image_picker", "id": "image", "label": "الصورة" },
+    { "type": "checkbox", "id": "image_first", "label": "الصورة على اليسار", "default": false },
+    { "type": "text", "id": "button_label", "label": "نص الرابط" },
+    { "type": "url", "id": "button_link", "label": "الرابط" }
+  ],
+  "blocks": [
+    { "type": "item", "name": "عنصر", "settings": [
+      { "type": "text", "id": "title", "label": "العنوان", "default": "التنظيف" },
+      { "type": "text", "id": "text", "label": "الوصف", "default": "غسول لطيف يناسب نوع بشرتكِ" },
+      { "type": "select", "id": "icon", "label": "الأيقونة (لنمط القيم)", "options": [{ "value": "sparkle", "label": "تألق" }, { "value": "doc", "label": "معلومات" }, { "value": "shield", "label": "أمان" }, { "value": "chat", "label": "دعم" }, { "value": "leaf", "label": "ورقة" }], "default": "leaf" }
+    ]}
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "قسم تحريري", "blocks": [{ "type": "item" }, { "type": "item", "settings": { "title": "الترطيب", "text": "سيروم ومرطب بقوام مريح" } }, { "type": "item", "settings": { "title": "الحماية", "text": "واقي شمس يُجدَّد خلال اليوم" } }] }]
+}
+{% endschema %}

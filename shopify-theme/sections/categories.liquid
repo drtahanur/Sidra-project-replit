@@ -1,0 +1,55 @@
+{%- liquid
+  assign configured = 0
+  for block in section.blocks
+    if block.settings.collection != blank
+      assign configured = configured | plus: 1
+    endif
+  endfor
+-%}
+{%- if configured > 0 or request.design_mode -%}
+<section class="section categories">
+  <div class="container">
+    <div class="section-head">
+      <div>{%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}<h2 class="section-title">{{ section.settings.heading }}</h2></div>
+    </div>
+    {%- if request.design_mode and configured < section.blocks.size -%}<div class="editor-note">محرر القالب فقط: اربطي كل بطاقة بتصنيف من إعداد «التصنيف». البطاقات غير المرتبطة مخفية عن الزوار.</div>{%- endif -%}
+    <div class="categories__rail">
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        {%- if c == blank and request.design_mode == false -%}{%- continue -%}{%- endif -%}
+        <a href="{% if c != blank %}{{ c.url }}{% else %}{{ routes.collections_url }}{% endif %}" class="category-card" {{ block.shopify_attributes }}>
+          <span class="arch category-card__media">
+            {%- if block.settings.image != blank -%}
+              {%- assign image_alt = block.settings.title | default: c.title -%}{{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: image_alt }}
+            {%- elsif c.featured_image -%}
+              {{ c.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: c.title }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </span>
+          <span class="category-card__title">{{ block.settings.title | default: c.title | default: 'تصنيف' }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "تسوّقي حسب الفئة",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "عنوان صغير", "default": "تسوّقي حسب الفئة" },
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "من أين تبدئين اليوم؟" }
+  ],
+  "blocks": [
+    { "type": "category", "name": "فئة", "settings": [
+      { "type": "collection", "id": "collection", "label": "التصنيف" },
+      { "type": "text", "id": "title", "label": "عنوان مخصص" },
+      { "type": "image_picker", "id": "image", "label": "صورة مخصصة" }
+    ]}
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "تسوّقي حسب الفئة", "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" }] }]
+}
+{% endschema %}

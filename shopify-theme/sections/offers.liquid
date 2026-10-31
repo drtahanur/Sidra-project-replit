@@ -1,0 +1,59 @@
+{%- comment -%} Shows ONLY products from the chosen collection that currently have a real compare-at discount. Hidden from visitors when none exist. {%- endcomment -%}
+{%- liquid
+  assign col = section.settings.collection
+  assign offer_count = 0
+  if col != blank
+    for p in col.products limit: 50
+      if p.available and p.compare_at_price > p.price
+        assign offer_count = offer_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+{%- if offer_count > 0 or request.design_mode -%}
+<section class="section offers">
+  <div class="container">
+    <div class="offers__banner">
+      <div class="offers__copy">
+        {%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.terms != blank -%}<div class="rte offers__terms">{{ section.settings.terms }}</div>{%- endif -%}
+        {%- if col != blank -%}<a href="{{ col.url }}" class="btn btn--light">{{ section.settings.button_label }}</a>{%- endif -%}
+      </div>
+      {%- if section.settings.image != blank -%}
+        {%- assign image_alt = section.settings.image.alt | default: '' -%}
+        <div class="offers__media">{{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: image_alt }}</div>
+      {%- endif -%}
+    </div>
+    {%- if offer_count > 0 -%}
+      <div class="product-grid product-grid--4 offers__grid">
+        {%- assign shown = 0 -%}
+        {%- for p in col.products limit: 50 -%}
+          {%- if p.available and p.compare_at_price > p.price and shown < section.settings.limit -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {% render 'product-card', product: p, index: shown, section_id: section.id %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="editor-note">محرر القالب فقط: لا توجد حاليًا منتجات بسعر مقارنة أعلى من سعر البيع في التصنيف المختار، لذلك القسم مخفي عن الزوار. اختاري تصنيف العروض وأضيفي «السعر قبل التخفيض» للمنتجات المخفّضة فعليًا.</div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "العروض",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "عنوان صغير", "default": "عروض ومجموعات مميزة" },
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "عروض سدرة الحالية" },
+    { "type": "richtext", "id": "terms", "label": "شروط العرض ومدته", "info": "اذكري الشروط والمدة الفعلية. لا تستخدمي عدادات أو رسائل ندرة غير حقيقية." },
+    { "type": "collection", "id": "collection", "label": "تصنيف العروض" },
+    { "type": "image_picker", "id": "image", "label": "صورة (اختياري)" },
+    { "type": "text", "id": "button_label", "label": "نص الزر", "default": "تصفّحي العروض" },
+    { "type": "range", "id": "limit", "label": "عدد المنتجات", "min": 2, "max": 12, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "العروض" }]
+}
+{% endschema %}

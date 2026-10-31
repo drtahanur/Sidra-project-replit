@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code | default: 'ar' }}" dir="rtl" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F8F4EF">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- else -%}
+    <link rel="icon" type="image/svg+xml" href="{{ 'logo-mark.svg' | asset_url }}">
+  {%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} – {{ current_tags | join: '، ' }}{% endif %}{% if current_page != 1 %} – صفحة {{ current_page }}{% endif %}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script>document.documentElement.classList.replace('no-js','js');
+    window.SidraTheme = { routes: { root: {{ routes.root_url | json }}, cart: {{ routes.cart_url | json }}, cartAdd: {{ routes.cart_add_url | json }}, cartChange: {{ routes.cart_change_url | json }}, cartUpdate: {{ routes.cart_update_url | json }}, search: {{ routes.search_url | json }} }, currency: {{ cart.currency.iso_code | default: shop.currency | json }}, moneyFormat: {{ shop.money_format | json }} };</script>
+  {%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":{{ shop.name | json }},"url":{{ request.origin | append: routes.root_url | json }},"logo":{{ 'logo.svg' | asset_url | prepend: 'https:' | json }}}</script>
+  {%- endif -%}
+  {{ content_for_header }}
+</head>
+<body class="template-{{ template.name | handle }}">
+  <a class="skip-link" href="#MainContent">تخطَّ إلى المحتوى</a>
+  {% section 'header' %}
+  <main id="MainContent" class="main" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+  {% section 'footer' %}
+  {% render 'cart-drawer' %}
+  {%- if settings.support_whatsapp_number != blank -%}
+  <a class="whatsapp-fab" href="https://wa.me/{{ settings.support_whatsapp_number | strip }}" target="_blank" rel="noopener" aria-label="الدعم الفني عبر واتساب">{% render 'icon', name: 'whatsapp' %}</a>
+  {%- endif -%}
+</body>
+</html>

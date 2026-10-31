@@ -1,0 +1,35 @@
+{%- assign col = section.settings.collection -%}
+{%- if col != blank and col.products_count > 0 or request.design_mode -%}
+<section class="section featured{% if section.settings.tinted %} section--tint{% endif %}">
+  <div class="container">
+    <div class="section-head">
+      <div>{%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}<h2 class="section-title">{{ section.settings.heading | default: col.title }}</h2></div>
+      {%- if col != blank -%}<a href="{{ col.url }}" class="link-arrow">عرض الكل{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    </div>
+    {%- if col != blank and col.products_count > 0 -%}
+      <div class="product-grid product-grid--{{ section.settings.columns }}">
+        {%- for product in col.products limit: section.settings.limit -%}
+          {% render 'product-card', product: product, index: forloop.index, section_id: section.id %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="editor-note">محرر القالب فقط: اربطي هذا القسم بتصنيف يحتوي منتجات من إعداد «التصنيف». لن يظهر القسم للزوار حتى ذلك.</div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "مجموعة منتجات مميزة",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "عنوان صغير", "default": "الأكثر طلبًا" },
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "اختيارات يعود إليها الجميع" },
+    { "type": "collection", "id": "collection", "label": "التصنيف" },
+    { "type": "range", "id": "limit", "label": "عدد المنتجات", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "select", "id": "columns", "label": "الأعمدة على الكمبيوتر", "options": [{ "value": "3", "label": "3" }, { "value": "4", "label": "4" }], "default": "4" },
+    { "type": "checkbox", "id": "tinted", "label": "خلفية وردية ناعمة", "default": false }
+  ],
+  "presets": [{ "name": "مجموعة منتجات مميزة" }]
+}
+{% endschema %}

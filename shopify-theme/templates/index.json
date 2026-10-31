@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": {} },
+    "categories": {
+      "type": "categories",
+      "settings": {},
+      "blocks": {
+        "skin": { "type": "category", "settings": { "title": "العناية بالبشرة" } },
+        "makeup": { "type": "category", "settings": { "title": "المكياج" } },
+        "sun": { "type": "category", "settings": { "title": "واقي الشمس" } },
+        "serum": { "type": "category", "settings": { "title": "السيروم" } },
+        "lips": { "type": "category", "settings": { "title": "العناية بالشفاه" } },
+        "sets": { "type": "category", "settings": { "title": "مجموعات الجمال" } }
+      },
+      "block_order": ["skin", "makeup", "sun", "serum", "lips", "sets"]
+    },
+    "bestsellers": { "type": "featured-collection", "settings": { "kicker": "الأكثر مبيعًا", "heading": "اختياراتكِ المفضّلة", "limit": 4, "columns": "4" } },
+    "editorial": {
+      "type": "editorial",
+      "settings": { "style": "routine", "kicker": "مساحة للعناية", "heading": "روتينكِ يبدأ من الاختيار الصحيح.", "text": "اكتشفي منتجات تساعدكِ على بناء روتين عناية يناسب احتياجاتكِ.", "button_label": "اكتشفي المنتجات" },
+      "blocks": {
+        "cleanse": { "type": "item", "settings": { "title": "تنظيف", "text": "ابدئي بخطوة مناسبة لبشرتكِ.", "icon": "leaf" } },
+        "care": { "type": "item", "settings": { "title": "عناية وترطيب", "text": "اختاري وفق احتياجكِ وتعليمات المنتج.", "icon": "sparkle" } },
+        "protect": { "type": "item", "settings": { "title": "حماية", "text": "اتبعي إرشادات واقي الشمس المناسب.", "icon": "shield" } }
+      },
+      "block_order": ["cleanse", "care", "protect"]
+    },
+    "needs": {
+      "type": "skin-needs",
+      "settings": {},
+      "blocks": {
+        "hydration": { "type": "need", "settings": { "label": "الترطيب" } },
+        "dry": { "type": "need", "settings": { "label": "البشرة الجافة" } },
+        "oily": { "type": "need", "settings": { "label": "البشرة الدهنية" } },
+        "sensitive": { "type": "need", "settings": { "label": "البشرة الحساسة" } },
+        "sun": { "type": "need", "settings": { "label": "الحماية من الشمس" } }
+      },
+      "block_order": ["hydration", "dry", "oily", "sensitive", "sun"]
+    },
+    "picks": { "type": "featured-collection", "settings": { "kicker": "مختارات سدرة", "heading": "اختيارات بعناية", "columns": "4", "limit": 4 } },
+    "offers": { "type": "offers", "settings": {} },
+    "values": {
+      "type": "editorial",
+      "settings": { "style": "values", "kicker": "لماذا سدرة؟", "heading": "تفاصيل تجعل التجربة أبسط.", "text": "من اكتشاف المنتج إلى إتمام الشراء، نركّز على وضوح المعلومات وسهولة الاستخدام." },
+      "blocks": {
+        "selection": { "type": "item", "settings": { "title": "اختيارات بعناية", "text": "منتجات لاحتياجات متنوعة.", "icon": "leaf" } },
+        "information": { "type": "item", "settings": { "title": "معلومات واضحة", "text": "تفاصيل تساعدكِ على الاختيار.", "icon": "doc" } },
+        "payment": { "type": "item", "settings": { "title": "شراء عبر Shopify", "text": "إتمام الطلب على منصة المتجر.", "icon": "shield" } },
+        "support": { "type": "item", "settings": { "title": "تواصلي معنا", "text": "صفحة مخصصة لاستفساراتكِ.", "icon": "chat" } }
+      },
+      "block_order": ["selection", "information", "payment", "support"]
+    },
+    "journal": { "type": "journal", "settings": {} },
+    "newsletter": { "type": "newsletter", "settings": {} }
+  },
+  "order": ["hero", "categories", "bestsellers", "editorial", "needs", "picks", "offers", "values", "journal", "newsletter"]
+}

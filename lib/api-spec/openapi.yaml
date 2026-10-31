@@ -1,0 +1,434 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: account
+    description: Signed-in customer profile, cart, wishlist, addresses
+  - name: payments
+    description: Checkout and payment providers
+  - name: orders
+    description: Customer orders
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /me:
+    get:
+      operationId: getMe
+      tags: [account]
+      summary: Current customer profile (created on first call)
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Profile" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    patch:
+      operationId: updateMe
+      tags: [account]
+      summary: Update name and phone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProfileUpdate" }
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Profile" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /me/sync:
+    post:
+      operationId: syncMe
+      tags: [account]
+      summary: Re-read name, email and photo from the identity provider and store them
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Profile" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /me/cart:
+    get:
+      operationId: getMyCart
+      tags: [account]
+      summary: Saved cart
+      responses:
+        "200":
+          description: Cart lines
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CartState" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    put:
+      operationId: saveMyCart
+      tags: [account]
+      summary: Replace saved cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CartState" }
+      responses:
+        "200":
+          description: Cart lines
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CartState" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /me/wishlist:
+    get:
+      operationId: getMyWishlist
+      tags: [account]
+      summary: Saved wishlist
+      responses:
+        "200":
+          description: Wishlist
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WishlistState" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    put:
+      operationId: saveMyWishlist
+      tags: [account]
+      summary: Replace saved wishlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WishlistState" }
+      responses:
+        "200":
+          description: Wishlist
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/WishlistState" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /me/addresses:
+    get:
+      operationId: listMyAddresses
+      tags: [account]
+      summary: Saved addresses
+      responses:
+        "200":
+          description: Addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Address" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      operationId: addMyAddress
+      tags: [account]
+      summary: Save a new address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AddressInput" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Address" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /me/addresses/{id}:
+    delete:
+      operationId: deleteMyAddress
+      tags: [account]
+      summary: Delete a saved address
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Deleted }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /payments/methods:
+    get:
+      operationId: getPaymentMethods
+      tags: [payments]
+      summary: Which payment providers are configured on this server
+      responses:
+        "200":
+          description: Provider availability
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PaymentMethods" }
+  /checkout:
+    post:
+      operationId: createCheckout
+      tags: [payments]
+      summary: Create an order priced on the server and start a payment with the chosen provider
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CheckoutInput" }
+      responses:
+        "201":
+          description: Order created; send the customer to redirectUrl
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CheckoutResult" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "502": { $ref: "#/components/responses/ProviderError" }
+        "503": { $ref: "#/components/responses/NotConfigured" }
+  /checkout/paypal/capture:
+    post:
+      operationId: capturePaypalOrder
+      tags: [payments]
+      summary: Capture an approved PayPal payment (called after the customer returns from PayPal)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PaypalCaptureInput" }
+      responses:
+        "200":
+          description: Order after capture
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "502": { $ref: "#/components/responses/ProviderError" }
+        "503": { $ref: "#/components/responses/NotConfigured" }
+  /orders:
+    get:
+      operationId: listMyOrders
+      tags: [orders]
+      summary: My orders
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /orders/{id}:
+    get:
+      operationId: getMyOrder
+      tags: [orders]
+      summary: One of my orders; pending orders are re-checked with the payment provider
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Order
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+    Unauthorized:
+      description: Sign-in required
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+    NotConfigured:
+      description: The payment provider has no credentials configured on the server
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+    ProviderError:
+      description: The payment provider rejected or failed the request
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ApiError" }
+  schemas:
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        code: { type: string }
+    Profile:
+      type: object
+      required: [id, email, name, imageUrl, phone, gender, country, createdAt]
+      properties:
+        id: { type: string }
+        email: { type: string }
+        name: { type: string }
+        imageUrl: { type: ["string", "null"] }
+        phone: { type: ["string", "null"] }
+        gender: { type: ["string", "null"], enum: [male, female, null] }
+        country: { type: ["string", "null"], maxLength: 2 }
+        createdAt: { type: string, format: date-time }
+    ProfileUpdate:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, maxLength: 80 }
+        phone: { type: ["string", "null"], maxLength: 30 }
+    CartLine:
+      type: object
+      required: [handle, variantId, qty]
+      properties:
+        handle: { type: string }
+        variantId: { type: string }
+        qty: { type: integer, minimum: 1, maximum: 10 }
+    CartState:
+      type: object
+      required: [lines]
+      properties:
+        lines:
+          type: array
+          maxItems: 50
+          items: { $ref: "#/components/schemas/CartLine" }
+    WishlistState:
+      type: object
+      required: [handles]
+      properties:
+        handles:
+          type: array
+          maxItems: 200
+          items: { type: string }
+    AddressInput:
+      type: object
+      required: [fullName, phone, city, line1]
+      properties:
+        label: { type: string, maxLength: 40 }
+        fullName: { type: string, minLength: 2, maxLength: 80 }
+        phone: { type: string, minLength: 6, maxLength: 30 }
+        country: { type: string, maxLength: 60 }
+        city: { type: string, minLength: 2, maxLength: 60 }
+        line1: { type: string, minLength: 3, maxLength: 160 }
+        line2: { type: ["string", "null"], maxLength: 160 }
+        postalCode: { type: ["string", "null"], maxLength: 20 }
+    Address:
+      type: object
+      required: [id, label, fullName, phone, country, city, line1, line2, postalCode, isDefault]
+      properties:
+        id: { type: integer }
+        label: { type: string }
+        fullName: { type: string }
+        phone: { type: string }
+        country: { type: string }
+        city: { type: string }
+        line1: { type: string }
+        line2: { type: ["string", "null"] }
+        postalCode: { type: ["string", "null"] }
+        isDefault: { type: boolean }
+    PaymentMethods:
+      type: object
+      required: [stripe, paypal, crypto]
+      properties:
+        stripe: { type: boolean }
+        paypal: { type: boolean }
+        crypto: { type: boolean }
+    CheckoutInput:
+      type: object
+      required: [provider, lines, address, returnUrl]
+      properties:
+        provider: { type: string, enum: [stripe, paypal, crypto] }
+        lines:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items: { $ref: "#/components/schemas/CartLine" }
+        address: { $ref: "#/components/schemas/AddressInput" }
+        saveAddress: { type: boolean }
+        returnUrl:
+          type: string
+          description: Absolute URL of the storefront result page on the same host as the request
+    CheckoutResult:
+      type: object
+      required: [orderId, redirectUrl]
+      properties:
+        orderId: { type: integer }
+        redirectUrl: { type: string }
+    PaypalCaptureInput:
+      type: object
+      required: [orderId]
+      properties:
+        orderId: { type: integer }
+    OrderItem:
+      type: object
+      required: [handle, variantId, title, variantTitle, unitPrice, qty]
+      properties:
+        handle: { type: string }
+        variantId: { type: string }
+        title: { type: string }
+        variantTitle: { type: string }
+        unitPrice: { type: integer }
+        qty: { type: integer }
+    Order:
+      type: object
+      required: [id, status, paymentProvider, currency, subtotal, shipping, total, items, shippingAddress, createdAt, paidAt]
+      properties:
+        id: { type: integer }
+        status: { type: string, enum: [pending, paid, failed, cancelled, expired] }
+        paymentProvider: { type: string, enum: [stripe, paypal, crypto] }
+        currency: { type: string }
+        subtotal: { type: integer }
+        shipping: { type: integer }
+        total: { type: integer }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/OrderItem" }
+        shippingAddress:
+          type: object
+          required: [fullName, phone, country, city, line1]
+          properties:
+            fullName: { type: string }
+            phone: { type: string }
+            country: { type: string }
+            city: { type: string }
+            line1: { type: string }
+            line2: { type: ["string", "null"] }
+            postalCode: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+        paidAt: { type: ["string", "null"], format: date-time }
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+

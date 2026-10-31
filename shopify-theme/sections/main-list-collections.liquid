@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container">
+    <header class="section-head"><h1 class="page-title">تسوّقي حسب الفئة</h1></header>
+    {% paginate collections by 24 %}
+      <div class="product-grid product-grid--4">
+        {% for collection in collections %}
+          {% if collection.products_count > 0 %}
+            <a class="category-card" href="{{ collection.url }}">
+              <span class="arch category-card__media">
+                {% if collection.featured_image %}
+                  {{ collection.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: collection.title }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </span>
+              <h2 class="category-card__title">{{ collection.title }}</h2>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" aria-label="ترقيم الصفحات">{{ paginate | default_pagination: previous: 'السابق', next: 'التالي' }}</nav>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+{% schema %}
+{ "name": "جميع التصنيفات", "settings": [] }
+{% endschema %}

@@ -1,0 +1,414 @@
+/* Each scene shares the purple identity but has its own composition,
+   image treatment and background. The slide copy remains unchanged. */
+.scene.sidra-slide {
+  isolation: isolate;
+}
+.scene::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.scene .slide-title {
+  top: 7.2vh;
+  font-size: 4.1vw;
+  line-height: 1.35;
+}
+.scene .story-photo {
+  position: absolute;
+  z-index: 1;
+  top: 24vh;
+  left: 5.5vw;
+  width: 41vw;
+  height: 64vh;
+  overflow: hidden;
+  border-radius: 2.4vw;
+  box-shadow: 0 1.5vh 4vh rgba(64, 28, 93, .12);
+}
+.scene .story-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.scene .story-copy {
+  position: absolute;
+  z-index: 2;
+  top: 28vh;
+  right: 6vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2.8vh;
+  width: 44vw;
+  margin: 0;
+  padding: 0;
+  color: #3a224f;
+  font-family: var(--font-body-family);
+  font-size: 2.05vw;
+  font-weight: 400;
+  line-height: 1.5;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+}
+.scene .story-copy li {
+  display: grid;
+  grid-template-columns: .65vw minmax(0, 1fr);
+  gap: 1.1vw;
+  align-items: start;
+  text-wrap: pretty;
+}
+.scene .story-copy li::before {
+  content: '';
+  width: .58vw;
+  height: .58vw;
+  margin-top: 1.03vw;
+  border-radius: 50%;
+  background: #8355af;
+}
+.scene .copy-index {
+  gap: 2vh;
+}
+.scene .copy-index li {
+  padding-bottom: 2vh;
+  border-bottom: .08vw solid rgba(111, 72, 151, .22);
+}
+.scene .copy-pairs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2.8vw;
+  row-gap: 6vh;
+  width: 49vw;
+  font-size: 2vw;
+}
+.scene .copy-pairs li {
+  display: block;
+  padding-top: 2vh;
+  border-top: .16vw solid rgba(111, 72, 151, .3);
+}
+.scene .copy-pairs li::before {
+  display: none;
+}
+.scene .background-mark {
+  opacity: .17;
+}
+.scene .replit-slide-logo {
+  background: transparent;
+}
+
+/* Cover: a broad violet field frames the beauty collection. */
+.scene.scene-cover {
+  background: linear-gradient(118deg, #d4b9eb 0%, #ead8f3 47%, #faf3fc 72%, #f6e7f0 100%);
+}
+.scene-cover::before {
+  inset: 3vh 49vw 3vh 2.5vw;
+  border: .16vw solid rgba(255, 255, 255, .65);
+  border-radius: 25vw 25vw 3vw 3vw;
+}
+.scene-cover .cover-photo {
+  top: 8.5vh;
+  left: 5vw;
+  width: 43vw;
+  height: 82vh;
+  border-radius: 23vw 23vw 2.5vw 2.5vw;
+}
+.scene-cover .cover-copy {
+  top: 20vh;
+  right: 6vw;
+}
+.scene-cover .presenter {
+  font-size: 1.75vw;
+}
+
+/* Overview: botanical arch, with a warm blush complement. */
+.scene.scene-overview {
+  background: linear-gradient(100deg, #e9d4e5 0%, #f8eaf0 41%, #f9f4fc 65%, #ede2f8 100%);
+}
+.scene-overview::before {
+  left: 3vw;
+  top: 20vh;
+  width: 45vw;
+  height: 71vh;
+  border: .13vw solid #c8a1bf;
+  border-radius: 23vw 23vw 3vw 3vw;
+}
+.scene-overview .story-photo {
+  border-radius: 22vw 22vw 2vw 2vw;
+}
+.scene-overview .story-copy {
+  top: 30vh;
+  gap: 3.5vh;
+}
+
+/* Discovery: concentric search rings behind a fully visible phone scene. */
+.scene.scene-discovery {
+  background: radial-gradient(ellipse at 17% 55%, #d4c7ed 0%, #ece4fa 43%, #f8f5fd 70%);
+}
+.scene-discovery::before {
+  left: 2vw;
+  top: 22vh;
+  width: 46vw;
+  height: 68vh;
+  border: .22vw solid rgba(126, 92, 177, .25);
+  border-radius: 48%;
+  box-shadow: inset 0 0 0 1.4vw rgba(248, 244, 253, .55);
+}
+.scene-discovery .story-photo {
+  left: 6vw;
+  top: 26vh;
+  width: 39vw;
+  height: 61vh;
+  border-radius: 11vw 2vw 11vw 2vw;
+}
+
+/* Product: a lilac display plinth, with the picture on the right. */
+.scene.scene-product {
+  background: linear-gradient(90deg, #fbf7fc 0%, #f4ebf8 57%, #d7b8e9 57%, #e8d4f3 100%);
+}
+.scene-product::before {
+  right: 4vw;
+  top: 22vh;
+  width: 40vw;
+  height: 70vh;
+  border-radius: 4vw;
+  border: .14vw solid rgba(255, 255, 255, .7);
+}
+.scene-product .story-photo {
+  left: auto;
+  right: 6vw;
+  width: 36vw;
+  height: 63vh;
+}
+.scene-product .story-copy {
+  right: auto;
+  left: 6vw;
+  top: 32vh;
+  width: 47vw;
+  gap: 4vh;
+  font-size: 2.2vw;
+}
+
+/* Favorites: a warm diagonal surface echoes the shopping bag. */
+.scene.scene-favorites {
+  background: linear-gradient(135deg, #d8b6df 0%, #ead2ec 37%, #f9edf4 37%, #f5edfb 100%);
+}
+.scene-favorites::before {
+  left: 4vw;
+  top: 24vh;
+  width: 38vw;
+  height: 65vh;
+  border: .13vw solid rgba(255, 255, 255, .8);
+  border-radius: 3vw 13vw 3vw 3vw;
+}
+.scene-favorites .story-photo {
+  left: 6vw;
+  top: 28vh;
+  width: 34vw;
+  height: 57vh;
+  border-radius: 2vw 12vw 2vw 2vw;
+}
+.scene-favorites .story-copy {
+  top: 30vh;
+}
+
+/* Account: the globe and phone sit between two balanced text columns. */
+.scene.scene-account {
+  background: linear-gradient(180deg, #f9f7fd 0%, #eeeafa 45%, #dcd3f1 100%);
+}
+.scene-account::before {
+  left: 31.5vw;
+  top: 24vh;
+  width: 37vw;
+  height: 65vh;
+  border-radius: 20vw;
+  border: .14vw solid #bcacd9;
+}
+.scene-account .story-photo {
+  left: 34vw;
+  top: 28vh;
+  width: 32vw;
+  height: 57vh;
+  border-radius: 17vw 17vw 3vw 3vw;
+}
+.scene-account .story-copy {
+  display: grid;
+  grid-template-columns: 25vw 25vw;
+  column-gap: 38vw;
+  row-gap: 7vh;
+  top: 31vh;
+  width: 88vw;
+  font-size: 2vw;
+}
+
+/* Security: a crystalline shield-like surround, not a generic icon page. */
+.scene.scene-security {
+  background: linear-gradient(120deg, #cbb6e6 0%, #e0cff0 46%, #f5eefb 46%, #fcf9fe 100%);
+}
+.scene-security::before {
+  left: 3vw;
+  top: 19vh;
+  width: 45vw;
+  height: 72vh;
+  background: rgba(113, 69, 160, .15);
+  clip-path: polygon(50% 0, 100% 16%, 94% 78%, 50% 100%, 6% 78%, 0 16%);
+}
+.scene-security .story-photo {
+  left: 6vw;
+  top: 26vh;
+  width: 39vw;
+  height: 60vh;
+  border-radius: 3vw 3vw 11vw 3vw;
+}
+.scene-security .story-copy {
+  top: 27vh;
+  font-size: 2vw;
+}
+
+/* Address: an orderly location grid with a soft mint accent. */
+.scene.scene-address {
+  background:
+    linear-gradient(90deg, rgba(151, 127, 183, .075) .07vw, transparent .07vw),
+    linear-gradient(0deg, rgba(151, 127, 183, .075) .07vw, transparent .07vw),
+    linear-gradient(115deg, #f6f2fb 0%, #efe5f9 54%, #dcebe8 100%);
+  background-size: 5vw 5vw, 5vw 5vw, 100% 100%;
+}
+.scene-address::before {
+  right: 3vw;
+  top: 22vh;
+  width: 41vw;
+  height: 68vh;
+  border: .14vw dashed rgba(119, 86, 154, .35);
+  border-radius: 5vw 16vw 5vw 5vw;
+}
+.scene-address .story-photo {
+  left: auto;
+  right: 6vw;
+  top: 25vh;
+  width: 36vw;
+  height: 62vh;
+  border-radius: 3vw 14vw 3vw 3vw;
+}
+.scene-address .story-copy {
+  right: auto;
+  left: 6vw;
+  width: 47vw;
+  top: 30vh;
+}
+.scene-address .story-copy li {
+  padding-bottom: 2vh;
+  border-bottom: .1vw dashed rgba(119, 86, 154, .28);
+}
+
+/* Shipping: angled bands give a clear sense of movement. */
+.scene.scene-shipping {
+  background: linear-gradient(155deg, #f6effb 0%, #f6effb 52%, #e7daf3 52%, #e7daf3 77%, #d2b9e4 77%);
+}
+.scene-shipping::before {
+  left: 4vw;
+  top: 23vh;
+  width: 39vw;
+  height: 65vh;
+  border: .14vw solid rgba(255, 255, 255, .9);
+  border-radius: 2vw 2vw 12vw 2vw;
+}
+.scene-shipping .story-photo {
+  left: 6vw;
+  top: 27vh;
+  width: 35vw;
+  height: 58vh;
+  border-radius: 1.5vw 1.5vw 11vw 1.5vw;
+}
+.scene-shipping .story-copy {
+  top: 30vh;
+}
+
+/* Payments: a full-height product photograph blends into the copy area. */
+.scene.scene-payments {
+  background: linear-gradient(100deg, #ddd3ed, #f7f1fd 66%, #e9e5f8);
+}
+.scene-payments .story-photo {
+  top: 0;
+  left: 0;
+  width: 56vw;
+  height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 72%, transparent 100%);
+}
+.scene-payments .slide-title {
+  width: 45vw;
+}
+.scene-payments .story-copy {
+  top: 28vh;
+  width: 43vw;
+  gap: 4vh;
+  font-size: 2.35vw;
+}
+.scene-payments .story-copy li {
+  padding-bottom: 2vh;
+  border-bottom: .09vw solid rgba(111, 72, 151, .2);
+}
+
+/* Technology: quiet circuit-grid texture supports a real workstation scene. */
+.scene.scene-technology {
+  background:
+    linear-gradient(90deg, rgba(132, 99, 175, .09) .07vw, transparent .07vw),
+    linear-gradient(0deg, rgba(132, 99, 175, .09) .07vw, transparent .07vw),
+    linear-gradient(125deg, #d7c6eb, #f3edfa 48%, #f9f6fd);
+  background-size: 3.4vw 3.4vw, 3.4vw 3.4vw, 100% 100%;
+}
+.scene-technology::before {
+  left: 3.8vw;
+  top: 24vh;
+  width: 43.5vw;
+  height: 66vh;
+  border: .13vw solid rgba(128, 92, 171, .3);
+  border-radius: 2.7vw;
+}
+.scene-technology .story-photo {
+  top: 27vh;
+  left: 6vw;
+  width: 39vw;
+  height: 60vh;
+  border-radius: 1.7vw;
+}
+.scene-technology .story-copy {
+  top: 29vh;
+}
+.scene-technology .logo-window {
+  width: 24vw;
+  height: 13vh;
+}
+
+/* Close: a gift photograph and ribbon-like arcs bookend the presentation. */
+.scene.scene-closing {
+  background: radial-gradient(ellipse at 20% 75%, #d5b4e2, transparent 59%), linear-gradient(125deg, #e7d3ed, #faedf5 60%, #f4effc);
+}
+.scene-closing::before {
+  left: 3vw;
+  top: 10vh;
+  width: 45vw;
+  height: 80vh;
+  border: .15vw solid rgba(255, 255, 255, .75);
+  border-radius: 3vw 23vw 23vw 3vw;
+}
+.scene-closing .story-photo {
+  top: 15vh;
+  left: 6vw;
+  width: 39vw;
+  height: 70vh;
+  border-radius: 2vw 20vw 20vw 2vw;
+}
+.scene-closing .closing-copy {
+  top: 22vh;
+  right: 6vw;
+  width: 45vw;
+}
+.scene-closing .closing-title {
+  font-size: 5.3vw;
+}
+.scene-closing .closing-name {
+  font-size: 1.75vw;
+  line-height: 1.5;
+}

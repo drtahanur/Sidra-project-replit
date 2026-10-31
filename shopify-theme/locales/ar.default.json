@@ -1,0 +1,23 @@
+{
+  "general": {
+    "search": { "title": "البحث", "placeholder": "ابحثي عن منتج أو ماركة", "submit": "ابحثي", "no_results": "لم نعثر على نتائج لهذا البحث." },
+    "accessibility": { "skip_to_content": "انتقلي إلى المحتوى", "close": "إغلاق", "loading": "جارٍ التحميل…" },
+    "pagination": { "previous": "السابق", "next": "التالي" },
+    "404": { "title": "الصفحة غير موجودة", "subtext": "لم نعثر على الصفحة المطلوبة.", "link": "العودة للرئيسية" }
+  },
+  "products": {
+    "product": { "add_to_cart": "أضيفي إلى السلة", "sold_out": "غير متوفر", "unavailable": "هذا الخيار غير متاح", "quantity": "الكمية", "price": "السعر", "vendor": "الماركة", "choose_options": "اختاري الخيارات", "from": "ابتداءً من {{ price }}", "description": "عن المنتج" }
+  },
+  "cart": {
+    "general": { "title": "سلتكِ", "empty": "سلتكِ فارغة الآن.", "continue_shopping": "تابعي التسوق", "subtotal": "المجموع الفرعي", "checkout": "إتمام الشراء", "update": "تحديث السلة", "remove": "إزالة", "taxes_and_shipping_at_checkout": "الشحن والضرائب والخصومات تُحسب عند إتمام الطلب. التوصيل خلال أسبوع كحد أقصى." }
+  },
+  "collections": {
+    "general": { "all": "جميع المنتجات", "empty": "لا توجد منتجات مطابقة لاختياراتكِ.", "filter": "تصفية", "sort": "ترتيب حسب", "apply": "تطبيق", "clear": "مسح الفلاتر" }
+  },
+  "newsletter": { "label": "البريد الإلكتروني", "button_label": "اشتركي", "success": "تم الاشتراك بنجاح.", "consent": "أوافق على استقبال رسائل سدرة التسويقية. يمكنني إلغاء الاشتراك في أي وقت." },
+  "customer": {
+    "account": { "title": "حسابكِ" },
+    "login": { "title": "تسجيل الدخول", "email": "البريد الإلكتروني", "password": "كلمة المرور", "sign_in": "دخول" }
+  },
+  "contact": { "form": { "name": "الاسم", "email": "البريد الإلكتروني", "phone": "رقم الهاتف", "comment": "رسالتكِ", "send": "إرسال", "post_success": "شكرًا لكِ. تم إرسال رسالتكِ." } }
+}

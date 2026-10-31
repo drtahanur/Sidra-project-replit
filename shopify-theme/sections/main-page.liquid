@@ -1,0 +1,27 @@
+<section class="section page">
+  <div class="container page__grid">
+    <article class="page__body">
+      <nav class="breadcrumbs" aria-label="مسار التنقل"><a href="{{ routes.root_url }}">الرئيسية</a><span aria-hidden="true">/</span><span aria-current="page">{{ page.title }}</span></nav>
+      <h1 class="page-title">{{ page.title }}</h1>
+      <div class="rte rte--lg">{{ page.content }}</div>
+      {%- if page.handle == 'contact' -%}
+        {%- form 'contact', class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-msg form-msg--ok" role="status">{% render 'icon', name: 'check' %} شكرًا لتواصلكِ، سنعود إليكِ قريبًا.</p>
+          {%- endif -%}
+          {%- if form.errors -%}<div class="form-msg form-msg--error" role="alert">يرجى مراجعة الحقول: {{ form.errors | default_errors }}</div>{%- endif -%}
+          <label class="field"><span class="field__label">الاسم</span><input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}" required></label>
+          <label class="field"><span class="field__label">البريد الإلكتروني</span><input type="email" name="contact[email]" autocomplete="email" value="{{ form.email }}" required></label>
+          <label class="field"><span class="field__label">رقم الجوال</span><input type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}" dir="ltr"></label>
+          <label class="field"><span class="field__label">رسالتكِ</span><textarea name="contact[body]" rows="5" required>{{ form.body }}</textarea></label>
+          <button type="submit" class="btn btn--primary">إرسال</button>
+        {%- endform -%}
+      {%- endif -%}
+    </article>
+    {%- if section.settings.image != blank -%}<div class="page__media arch">{{ section.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "صفحة ثابتة", "settings": [{ "type": "image_picker", "id": "image", "label": "صورة جانبية (اختياري)" }] }
+{% endschema %}

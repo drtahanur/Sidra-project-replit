@@ -1,0 +1,53 @@
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <img src="{{ 'logo-light.svg' | asset_url }}" alt="{{ shop.name }}" width="112" height="96" loading="lazy">
+      {%- if section.settings.about != blank -%}<div class="site-footer__about">{{ section.settings.about }}</div>{%- endif -%}
+      {%- if settings.support_whatsapp_number != blank -%}<p class="site-footer__support"><a href="https://wa.me/{{ settings.support_whatsapp_number | strip }}" target="_blank" rel="noopener">الدعم الفني عبر واتساب: <span dir="ltr">{{ settings.support_whatsapp_display }}</span></a></p>{%- endif -%}
+      <ul class="socials">
+        {%- if settings.social_instagram_link != blank -%}<li><a href="{{ settings.social_instagram_link }}" aria-label="إنستغرام">{% render 'icon', name: 'instagram' %}</a></li>{%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}<li><a href="{{ settings.social_tiktok_link }}" aria-label="تيك توك">{% render 'icon', name: 'tiktok' %}</a></li>{%- endif -%}
+        {%- if settings.social_snapchat_link != blank -%}<li><a href="{{ settings.social_snapchat_link }}" aria-label="سناب شات">{% render 'icon', name: 'snapchat' %}</a></li>{%- endif -%}
+      </ul>
+    </div>
+    {%- for block in section.blocks -%}
+      <div class="site-footer__col" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            <h2 class="site-footer__heading">{{ block.settings.heading | default: block.settings.menu.title }}</h2>
+            <ul>{%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
+          {%- when 'text' -%}
+            <h2 class="site-footer__heading">{{ block.settings.heading }}</h2>
+            <div class="rte">{{ block.settings.text }}</div>
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  <div class="container site-footer__bottom">
+    <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}. جميع الحقوق محفوظة.</p>
+    {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+      <ul class="payment-icons" aria-label="طرق الدفع المتاحة">{%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'payment-icon' }}</li>{%- endfor -%}</ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "الفوتر",
+  "settings": [
+    { "type": "richtext", "id": "about", "label": "وصف مختصر للعلامة", "default": "<p>سدرة متجر عربي للعناية بالبشرة والمكياج، يجمع اختيارات هادئة ومعلومات واضحة.</p>" },
+    { "type": "checkbox", "id": "show_payment", "label": "عرض طرق الدفع المفعّلة", "default": true }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "قائمة روابط", "settings": [
+      { "type": "text", "id": "heading", "label": "العنوان" },
+      { "type": "link_list", "id": "menu", "label": "القائمة", "default": "footer" }
+    ]},
+    { "type": "text", "name": "نص / معلومات التواصل", "settings": [
+      { "type": "text", "id": "heading", "label": "العنوان", "default": "تواصل معنا" },
+      { "type": "richtext", "id": "text", "label": "النص" }
+    ]}
+  ],
+  "max_blocks": 5
+}
+{% endschema %}

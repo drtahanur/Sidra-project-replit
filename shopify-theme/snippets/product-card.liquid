@@ -1,0 +1,33 @@
+{%- comment -%} Usage: {% render 'product-card', product: product, index: forloop.index, section_id: section.id %} {%- endcomment -%}
+{%- liquid
+  assign fv = product.selected_or_first_available_variant
+  assign quick_form_id = 'QuickAdd-' | append: section_id | append: '-' | append: product.id | append: '-' | append: index
+-%}
+<article class="product-card" style="--i: {{ index | default: 0 }}">
+  <div class="product-card__media">
+    <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_media -%}
+        {%- assign image_alt = product.featured_media.alt | default: product.title -%}{{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '300,450,600,900', sizes: '(min-width: 990px) 25vw, 50vw', alt: image_alt, class: 'product-card__img' }}
+      {%- else -%}
+        <div class="placeholder-media">{{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+      {%- endif -%}
+    </a>
+    {%- if product.compare_at_price > product.price and product.available -%}<span class="badge">تخفيض</span>{%- endif -%}
+    {%- unless product.available -%}<span class="badge badge--muted">نفدت الكمية</span>{%- endunless -%}
+    {%- if product.has_only_default_variant and product.available -%}
+      {%- form 'product', product, id: quick_form_id, class: 'product-card__quick', data-product-form: '' -%}
+        <input type="hidden" name="id" value="{{ fv.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn btn--primary btn--sm" data-add-to-cart>{% render 'icon', name: 'plus' %}<span>أضيفي إلى السلة</span></button>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+  <div class="product-card__info">
+    {%- if product.vendor != blank -%}<p class="meta">{{ product.vendor }}</p>{%- endif -%}
+    <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <div class="price-row">
+      <span class="price">{% if product.price_varies %}من {% endif %}{{ product.price | money }}</span>
+      {%- if product.compare_at_price > product.price -%}<s class="price price--compare">{{ product.compare_at_price | money }}</s>{%- endif -%}
+    </div>
+  </div>
+</article>

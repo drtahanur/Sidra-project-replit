@@ -1,0 +1,31 @@
+<article class="section article">
+  <div class="container container--narrow">
+    <nav class="breadcrumbs" aria-label="مسار التنقل"><a href="{{ routes.root_url }}">الرئيسية</a><span aria-hidden="true">/</span><a href="{{ blog.url }}">{{ blog.title }}</a></nav>
+    {%- if article.tags.size > 0 -%}<p class="kicker">{{ article.tags | join: '، ' }}</p>{%- endif -%}
+    <h1 class="page-title">{{ article.title }}</h1>
+    <p class="meta">{{ article.published_at | time_tag: format: 'date' }}{% if section.settings.show_author %} · {{ article.author }}{% endif %}</p>
+  </div>
+  {%- if article.image -%}<div class="container article__media">{%- assign image_alt = article.image.alt | default: article.title -%}{{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '800,1200,1600', alt: image_alt }}</div>{%- endif -%}
+  <div class="container container--narrow">
+    <div class="rte rte--lg">{{ article.content }}</div>
+    <a href="{{ blog.url }}" class="link-arrow">العودة إلى المجلة{% render 'icon', name: 'arrow' %}</a>
+    {%- if blog.comments_enabled? -%}
+      <div class="comments">
+        <h2 class="section-title">التعليقات ({{ article.comments_count }})</h2>
+        {%- for comment in article.comments -%}<div class="comment"><strong>{{ comment.author }}</strong><div class="rte">{{ comment.content }}</div></div>{%- endfor -%}
+        {%- form 'new_comment', article, class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}<p class="form-msg form-msg--ok" role="status">{% if blog.moderated? %}تم استلام تعليقكِ وسيظهر بعد المراجعة.{% else %}تم نشر تعليقكِ.{% endif %}</p>{%- endif -%}
+          {%- if form.errors -%}<div class="form-msg form-msg--error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <label class="field"><span class="field__label">الاسم</span><input type="text" name="comment[author]" value="{{ form.author }}" required></label>
+          <label class="field"><span class="field__label">البريد الإلكتروني</span><input type="email" name="comment[email]" value="{{ form.email }}" required></label>
+          <label class="field"><span class="field__label">التعليق</span><textarea name="comment[body]" rows="4" required>{{ form.body }}</textarea></label>
+          <button type="submit" class="btn btn--primary">نشر التعليق</button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{ "name": "المقال", "settings": [{ "type": "checkbox", "id": "show_author", "label": "عرض اسم الكاتب", "default": false }] }
+{% endschema %}

@@ -1,0 +1,14 @@
+[
+  {"id":"fde0bf51-98d5-40e1-a851-000000000001","position":1,"filepath":"src/pages/slides/Slide01.tsx","title":"سدرة | تجربة جمال متكاملة","description":"غلاف العرض","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000002","position":2,"filepath":"src/pages/slides/Slide02.tsx","title":"سدرة في لمحة","description":"نبذة عن المتجر","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000003","position":3,"filepath":"src/pages/slides/Slide03.tsx","title":"اكتشاف المنتجات بسهولة","description":"البحث والتصفية والتصفح","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000004","position":4,"filepath":"src/pages/slides/Slide04.tsx","title":"صفحة المنتج","description":"تفاصيل المنتجات وخياراتها","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000005","position":5,"filepath":"src/pages/slides/Slide05.tsx","title":"السلة والمفضلة","description":"حفظ المنتجات وتجهيز السلة","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000006","position":6,"filepath":"src/pages/slides/Slide06.tsx","title":"إنشاء الحساب وتسجيل الدخول","description":"خيارات التسجيل وبيانات الحساب","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000007","position":7,"filepath":"src/pages/slides/Slide07.tsx","title":"الملف الشخصي وأمان الحساب","description":"إعدادات الحساب والأمان","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000008","position":8,"filepath":"src/pages/slides/Slide08.tsx","title":"العناوين ومتابعة الطلبات","description":"عناوين التوصيل وحالات الطلبات","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000009","position":9,"filepath":"src/pages/slides/Slide09.tsx","title":"إتمام الطلب والشحن","description":"مراجعة الطلب والتوصيل","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000010","position":10,"filepath":"src/pages/slides/Slide10.tsx","title":"خيارات الدفع","description":"وسائل الدفع المتاحة بعد التفعيل","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000011","position":11,"filepath":"src/pages/slides/Slide11.tsx","title":"الدعم والتقنيات","description":"الدعم والتقنيات المستخدمة","speakerNotes":""},
+  {"id":"fde0bf51-98d5-40e1-a851-000000000012","position":12,"filepath":"src/pages/slides/Slide12.tsx","title":"شكرًا لحسن استماعكم","description":"الشريحة الختامية","speakerNotes":""}
+]

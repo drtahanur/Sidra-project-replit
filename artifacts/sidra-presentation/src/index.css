@@ -1,0 +1,325 @@
+@import 'tailwindcss';
+@import './styles/scenes.css';
+
+@theme inline {
+  --color-primary: var(--slide-primary);
+  --color-accent: var(--slide-accent);
+  --color-bg: var(--slide-bg);
+  --color-text: var(--slide-text);
+  --color-muted: var(--slide-muted);
+  --font-display: var(--font-display-family);
+  --font-body: var(--font-body-family);
+}
+
+:root {
+  --slide-primary: #59368a;
+  --slide-accent: #c8a8e7;
+  --slide-bg: #f5effb;
+  --slide-text: #311b4b;
+  --slide-muted: #745a8b;
+  --font-display-family: 'Cairo', sans-serif;
+  --font-body-family: 'IBM Plex Sans Arabic', sans-serif;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--slide-bg);
+  color: var(--slide-text);
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.slide-viewer {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* A lavender editorial system: large Arabic type, soft color fields and
+   subject-specific imagery, with generous presentation-safe margins. */
+.sidra-slide {
+  color: var(--slide-text);
+  background: linear-gradient(125deg, #faf6fd 0%, #f2e8fa 65%, #e8d8f4 100%);
+  font-family: var(--font-body-family);
+}
+.sidra-slide::after {
+  content: '';
+  position: absolute;
+  inset: 2.6vh 2.6vw;
+  border: 0.08vw solid rgba(111, 72, 151, .13);
+  pointer-events: none;
+}
+.replit-slide-logo {
+  position: absolute;
+  z-index: 5;
+  right: 6vw;
+  bottom: 3.5vh;
+  width: 12vw;
+  height: 5.5vh;
+  object-fit: cover;
+  background: transparent;
+}
+.slide-title {
+  position: absolute;
+  z-index: 2;
+  top: 7.1vh;
+  right: 6vw;
+  width: 88vw;
+  margin: 0;
+  color: #382052;
+  font-family: var(--font-display-family);
+  font-size: 4.2vw;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: right;
+  text-wrap: balance;
+}
+.bullet-list {
+  position: absolute;
+  z-index: 2;
+  top: 27vh;
+  right: 6vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25vh;
+  width: 55vw;
+  margin: 0;
+  padding: 0;
+  color: #3e2a52;
+  font-size: 2vw;
+  font-weight: 400;
+  line-height: 1.45;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+}
+.bullet-list li, .paired-list li {
+  display: grid;
+  grid-template-columns: 0.8vw minmax(0, 1fr);
+  align-items: start;
+  gap: 1.1vw;
+  text-wrap: pretty;
+}
+.bullet-list li::before, .paired-list li::before, .index-list li::before {
+  content: '';
+  width: 0.65vw;
+  height: 0.65vw;
+  margin-top: 0.94vw;
+  border-radius: 50%;
+  background: #9770c2;
+}
+.visual-panel {
+  position: absolute;
+  z-index: 1;
+  top: 24vh;
+  left: 6vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32vw;
+  height: 63vh;
+  overflow: hidden;
+  background: #e5d3f3;
+}
+.visual-arch {
+  border-radius: 16vw 16vw 2vw 2vw;
+}
+.visual-round {
+  border-radius: 48% 48% 44% 44%;
+}
+.visual-soft {
+  border-radius: 3vw;
+}
+.visual-panel img.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.visual-panel .drawing {
+  width: 74%;
+  height: 74%;
+  color: #744fa0;
+  opacity: .9;
+}
+.paired-list {
+  position: absolute;
+  z-index: 2;
+  top: 31vh;
+  right: 6vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 7vw;
+  row-gap: 8vh;
+  width: 88vw;
+  margin: 0;
+  padding: 0;
+  color: #3e2a52;
+  font-size: 2.15vw;
+  line-height: 1.5;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+}
+.index-list {
+  position: absolute;
+  z-index: 2;
+  top: 27vh;
+  right: 6vw;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2vh;
+  width: 88vw;
+  margin: 0;
+  padding: 0;
+  color: #3e2a52;
+  font-size: 2.15vw;
+  line-height: 1.45;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+}
+.index-list li {
+  display: grid;
+  grid-template-columns: .8vw minmax(0, 1fr);
+  align-items: start;
+  gap: 1.1vw;
+  padding-bottom: 2.6vh;
+  border-bottom: .08vw solid rgba(111, 72, 151, .18);
+}
+.columns-list, .card-list {
+  position: absolute;
+  z-index: 2;
+  top: 31vh;
+  right: 6vw;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5vw;
+  width: 88vw;
+  margin: 0;
+  padding: 0;
+  color: #3e2a52;
+  font-size: 2vw;
+  line-height: 1.5;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+}
+.columns-list li {
+  min-height: 31vh;
+  padding: 1vh 1.2vw;
+  border-right: .15vw solid rgba(111, 72, 151, .3);
+  text-wrap: pretty;
+}
+.card-list li {
+  min-height: 30vh;
+  padding: 2vw;
+  border-radius: 1.3vw;
+  background: rgba(220, 201, 239, .72);
+  text-wrap: pretty;
+}
+.background-mark {
+  position: absolute;
+  z-index: 0;
+  color: #a681c9;
+  opacity: .2;
+}
+.cover-photo {
+  position: absolute;
+  top: 7.5vh;
+  left: 5.5vw;
+  width: 42vw;
+  height: 85vh;
+  overflow: hidden;
+  border-radius: 20vw 20vw 2vw 2vw;
+  background: #d5bee9;
+}
+.cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cover-copy {
+  position: absolute;
+  z-index: 2;
+  top: 19vh;
+  right: 6.5vw;
+  width: 42vw;
+  direction: rtl;
+  text-align: right;
+}
+.cover-title {
+  margin: 0;
+  color: #41235e;
+  font-family: var(--font-display-family);
+  font-size: 5.15vw;
+  font-weight: 700;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.cover-subtitle {
+  margin: 3vh 0 0;
+  font-size: 2vw;
+  line-height: 1.55;
+}
+.presenter {
+  margin: 6vh 0 0;
+  color: #68468a;
+  font-family: var(--font-body-family);
+  font-size: 1.65vw;
+  font-weight: 700;
+  line-height: 1.4;
+  direction: ltr;
+  text-align: right;
+}
+.logo-window {
+  width: 27vw;
+  height: 16vh;
+  overflow: hidden;
+}
+.logo-window img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.closing-copy {
+  position: absolute;
+  z-index: 2;
+  top: 21vh;
+  right: 9vw;
+  width: 75vw;
+  direction: rtl;
+  text-align: right;
+}
+.closing-title {
+  margin: 0;
+  color: #41235e;
+  font-family: var(--font-display-family);
+  font-size: 6vw;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.closing-name {
+  margin: 5vh 0 0;
+  color: #654786;
+  font-size: 2vw;
+  font-weight: 700;
+  direction: ltr;
+  text-align: right;
+}
+.closing-subtitle {
+  margin: 3vh 0 0;
+  font-size: 2vw;
+  line-height: 1.5;
+}

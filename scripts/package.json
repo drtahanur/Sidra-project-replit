@@ -1,0 +1,19 @@
+{
+  "name": "@workspace/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "hello": "tsx ./src/hello.ts",
+    "package:sidra": "node ./src/package-sidra.mjs",
+    "check:sidra": "node ./src/check-sidra-theme.mjs",
+    "outline:sidra": "node ./src/outline-sidra-logo.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@shopify/theme-check-node": "^3.30.1",
+    "@types/node": "catalog:",
+    "fontkit": "^2.0.4",
+    "tsx": "catalog:"
+  }
+}

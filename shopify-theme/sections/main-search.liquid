@@ -1,0 +1,49 @@
+{%- paginate search.results by section.settings.per_page -%}
+<section class="section search-page">
+  <div class="container">
+    <div class="search-page__head">
+      <h1 class="page-title">البحث</h1>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-pill search-pill--lg">
+        {% render 'icon', name: 'search' %}
+        <label for="SearchMain" class="visually-hidden">البحث</label>
+        <input id="SearchMain" type="search" name="q" value="{{ search.terms | escape }}" placeholder="سيروم، أحمر شفاه، واقي شمس…">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="submit" class="btn btn--primary btn--sm">بحث</button>
+      </form>
+      {%- if search.performed -%}<p class="meta">{{ search.results_count }} نتيجة لـ «{{ search.terms | escape }}»</p>{%- endif -%}
+    </div>
+    {%- if search.performed -%}
+      {%- if search.filters.size > 0 -%}
+        <form class="facets facets--inline" action="{{ routes.search_url }}" method="get">
+          <input type="hidden" name="q" value="{{ search.terms | escape }}"><input type="hidden" name="type" value="product">
+          {%- for filter in search.filters -%}
+            {%- if filter.type == 'list' or filter.type == 'boolean' -%}
+              <details class="facet facet--pop"><summary>{{ filter.label }}{% render 'icon', name: 'chevron' %}</summary>
+                <ul class="facet__list">{%- for value in filter.values -%}<li><label class="check"><input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %}><span>{{ value.label }}</span></label></li>{%- endfor -%}</ul>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+          <label class="toolbar__sort">الترتيب<select name="sort_by" class="select" onchange="this.form.submit()">{%- for option in search.sort_options -%}<option value="{{ option.value }}"{% if option.value == search.sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}</select></label>
+          <button type="submit" class="btn btn--ghost btn--sm">تطبيق</button>
+        </form>
+      {%- endif -%}
+      {%- if search.results_count > 0 -%}
+        <div class="product-grid product-grid--4">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}{% render 'product-card', product: item, index: forloop.index, section_id: section.id %}
+            {%- else -%}<a href="{{ item.url }}" class="result-card"><span class="meta">{% if item.object_type == 'article' %}مقال{% else %}صفحة{% endif %}</span><strong>{{ item.title }}</strong></a>{%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}<nav class="pagination" aria-label="ترقيم الصفحات">{{ paginate | default_pagination: previous: 'السابق', next: 'التالي' }}</nav>{%- endif -%}
+      {%- else -%}
+        <div class="empty-state"><span class="empty-state__arch">{% render 'icon', name: 'search' %}</span><p class="empty-state__title">لم نجد نتائج — جرّبي كلمة أخرى</p></div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{ "name": "صفحة البحث", "settings": [{ "type": "range", "id": "per_page", "label": "نتائج في الصفحة", "min": 8, "max": 36, "step": 4, "default": 24 }] }
+{% endschema %}

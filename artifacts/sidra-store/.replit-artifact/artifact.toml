@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "سدرة — متجر الجمال"
+description = "معاينة عربية متجاوبة لهوية سدرة وقالب Shopify لمستحضرات التجميل والعناية بالبشرة، مع شعار عربي وملفات قالب Online Store 2.0."
+version = "1.0.0"
+id = "artifacts/sidra-store"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20703
+
+[services.development]
+run = "pnpm --filter @workspace/sidra-store run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sidra-store", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sidra-store/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20703"
+BASE_PATH = "/"

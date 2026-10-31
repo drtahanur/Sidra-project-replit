@@ -1,0 +1,23 @@
+<section class="section not-found">
+  <div class="container container--narrow center-head">
+    <span class="empty-state__arch empty-state__arch--lg">{% render 'icon', name: 'leaf' %}</span>
+    <p class="not-found__code num">404</p>
+    <h1 class="page-title">{{ section.settings.heading }}</h1>
+    <p class="meta">{{ section.settings.text }}</p>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-pill">
+      {% render 'icon', name: 'search' %}<label for="Search404" class="visually-hidden">البحث</label>
+      <input id="Search404" type="search" name="q" placeholder="ابحثي عن منتج"><input type="hidden" name="type" value="product">
+    </form>
+    <a href="{{ routes.root_url }}" class="btn btn--primary">العودة إلى الرئيسية</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "صفحة غير موجودة",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "لم نجد هذه الصفحة" },
+    { "type": "text", "id": "text", "label": "النص", "default": "ربما تغيّر الرابط. ابحثي عمّا تريدين أو عودي إلى الرئيسية." }
+  ]
+}
+{% endschema %}

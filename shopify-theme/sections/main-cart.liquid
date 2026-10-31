@@ -1,0 +1,44 @@
+<section class="section cart-page">
+  <div class="container">
+    <h1 class="page-title">سلّة التسوق</h1>
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" id="CartForm" class="cart-page__grid">
+        <ul class="cart-page__lines">
+          {%- for item in cart.items -%}
+            <li class="cart-line cart-line--lg">
+              <a href="{{ item.url }}">{%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: item.product.title, class: 'cart-line__img' }}{%- endif -%}</a>
+              <div class="cart-line__info">
+                {%- if item.vendor != blank -%}<p class="meta">{{ item.vendor }}</p>{%- endif -%}
+                <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}<p class="meta">{{ item.variant.title }}</p>{%- endunless -%}
+                {%- for discount in item.line_level_discount_allocations -%}<p class="meta discount">{{ discount.discount_application.title }} (−{{ discount.amount | money }})</p>{%- endfor -%}
+                <div class="cart-line__row">
+                  <label class="qty qty--sm"><span class="visually-hidden">الكمية لـ {{ item.product.title }}</span>
+                    <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric" class="qty__input num">
+                  </label>
+                  <span class="price">{{ item.final_line_price | money }}</span>
+                  <a href="{{ item.url_to_remove }}" class="icon-btn" aria-label="حذف {{ item.product.title }}">{% render 'icon', name: 'trash' %}</a>
+                </div>
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <aside class="cart-summary">
+          {%- for discount in cart.cart_level_discount_applications -%}<p class="subtotal subtotal--sm"><span>{{ discount.title }}</span><span>−{{ discount.total_allocated_amount | money }}</span></p>{%- endfor -%}
+          <p class="subtotal"><span>المجموع الفرعي</span><span>{{ cart.total_price | money_with_currency }}</span></p>
+          <p class="meta">التوصيل خلال ٢ إلى ٧ أيام عمل (أسبوع كحد أقصى). تُحتسب تكلفة الشحن والضرائب النهائية في صفحة الدفع.</p>
+          {%- if settings.show_cart_note -%}<label class="field"><span class="field__label">ملاحظة للطلب</span><textarea name="note" rows="3">{{ cart.note }}</textarea></label>{%- endif -%}
+          <button type="submit" name="update" class="btn btn--ghost btn--block">تحديث السلة</button>
+          <button type="submit" name="checkout" class="btn btn--primary btn--block">إتمام الطلب</button>
+          <a href="{{ routes.all_products_collection_url }}" class="link-arrow link-arrow--center">متابعة التسوق</a>
+        </aside>
+      </form>
+    {%- else -%}
+      <div class="empty-state"><span class="empty-state__arch">{% render 'icon', name: 'bag' %}</span><p class="empty-state__title">سلّتكِ فارغة</p><a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">تسوّقي الآن</a></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "صفحة السلة", "settings": [] }
+{% endschema %}

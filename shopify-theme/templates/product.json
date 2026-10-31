@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": { "show_vendor": true, "show_recommendations": true },
+      "blocks": {
+        "ingredients": { "type": "detail", "settings": { "title": "المكونات", "metafield_key": "custom.ingredients" } },
+        "usage": { "type": "detail", "settings": { "title": "طريقة الاستخدام", "metafield_key": "custom.how_to_use" } },
+        "specifications": { "type": "detail", "settings": { "title": "المواصفات والحجم", "metafield_key": "custom.specifications" } },
+        "warnings": { "type": "detail", "settings": { "title": "التحذيرات والاحتياطات", "metafield_key": "custom.warnings" } }
+      },
+      "block_order": ["ingredients", "usage", "specifications", "warnings"]
+    }
+  },
+  "order": ["main"]
+}

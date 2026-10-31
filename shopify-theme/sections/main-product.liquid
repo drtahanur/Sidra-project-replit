@@ -1,0 +1,119 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<script type="application/ld+json">{{ product | structured_data }}</script>
+<section class="section product" data-section="{{ section.id }}">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="مسار التنقل"><a href="{{ routes.root_url }}">الرئيسية</a><span aria-hidden="true">/</span>{% if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a><span aria-hidden="true">/</span>{% endif %}<span aria-current="page">{{ product.title }}</span></nav>
+    <div class="product__grid">
+      <div class="product__gallery">
+        {%- if product.media.size > 0 -%}
+          <div class="product__main arch">
+            {%- assign fm = current_variant.featured_media | default: product.featured_media -%}
+            {%- assign image_alt = fm.alt | default: product.title -%}{{ fm.preview_image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '600,900,1200,1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: image_alt, data-product-main-image: '' }}
+          </div>
+          {%- if product.media.size > 1 -%}
+            <ul class="product__thumbs" aria-label="صور المنتج">
+              {%- for media in product.media -%}
+                <li>
+                  {%- case media.media_type -%}
+                    {%- when 'image' -%}
+                      <a href="{%- assign image_alt = media.alt | default: product.title -%}{{ media | image_url: width: 1800 }}" target="_blank" rel="noopener" data-media-thumb>{{ media | image_url: width: 240 | image_tag: loading: 'lazy', alt: image_alt }}</a>
+                    {%- when 'video' -%}{{ media | video_tag: controls: true, image_size: '600x' }}
+                    {%- when 'external_video' -%}{{ media | external_video_tag }}
+                    {%- else -%}{{ media | media_tag }}
+                  {%- endcase -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- else -%}
+          <div class="product__main arch placeholder-media">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="product__info">
+        {%- if product.vendor != blank and section.settings.show_vendor -%}<p class="kicker kicker--plain">{{ product.vendor }}</p>{%- endif -%}
+        <h1 class="product__title">{{ product.title }}</h1>
+        <div class="product__price price-row">
+          <span class="price price--lg" data-product-price>{{ current_variant.price | money }}</span>
+          <s class="price price--compare" data-product-compare{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}>{{ current_variant.compare_at_price | money }}</s>
+        </div>
+        <p class="meta">{%- if cart.taxes_included -%}شامل الضريبة.{%- else -%}الضريبة تُحتسب عند الدفع.{%- endif -%} تكلفة الشحن تظهر في صفحة الدفع.</p>
+
+        <script type="application/json" data-variant-json>{{ product.variants | json }}</script>
+
+        {%- form 'product', product, class: 'product-form', data-product-form: '', novalidate: 'novalidate' -%}
+          <div class="field"{% if product.has_only_default_variant %} hidden{% endif %}>
+            <label for="Variant-{{ section.id }}" class="field__label">{% if product.options.size == 1 %}{{ product.options.first }}{% else %}الخيار{% endif %}</label>
+            <select id="Variant-{{ section.id }}" name="id" class="select">
+              {%- for variant in product.variants -%}
+                <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} — غير متوفر{% endunless %}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+          <p class="stock{% unless current_variant.available %} stock--out{% endunless %}" data-stock-label aria-live="polite">{%- if current_variant.available -%}متوفر{%- else -%}غير متوفر حاليًا{%- endif -%}</p>
+          <div class="product-form__row">
+            <div class="qty">
+              <label for="Quantity-{{ section.id }}" class="visually-hidden">الكمية</label>
+              <button type="button" class="qty__btn" data-qty-step="1" aria-label="زيادة الكمية">{% render 'icon', name: 'plus' %}</button>
+              <input id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1" inputmode="numeric" class="qty__input num">
+              <button type="button" class="qty__btn" data-qty-step="-1" aria-label="إنقاص الكمية">{% render 'icon', name: 'minus' %}</button>
+            </div>
+            <button type="submit" name="add" class="btn btn--primary btn--grow" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %}>
+              {%- if current_variant.available -%}أضيفي إلى السلة{%- else -%}غير متوفر{%- endif -%}
+            </button>
+          </div>
+          <p class="form-msg form-msg--error" data-product-error role="alert" hidden></p>
+          {{ form | payment_button }}
+        {%- endform -%}
+
+        {%- if section.settings.shipping_note != blank -%}
+          <div class="product__note">{% render 'icon', name: 'truck' %}<span>{{ section.settings.shipping_note }}</span></div>
+        {%- endif -%}
+
+        <div class="accordion">
+          <details open><summary>نبذة عن المنتج{% render 'icon', name: 'chevron' %}</summary><div class="rte">{{ product.description }}</div></details>
+          {%- for block in section.blocks -%}
+            {%- assign body = block.settings.content -%}
+            {%- if block.settings.metafield_key != blank -%}
+              {%- assign parts = block.settings.metafield_key | split: '.' -%}
+              {%- assign mf = product.metafields[parts[0]][parts[1]] -%}
+              {%- if mf != blank -%}{%- assign body = mf | metafield_tag -%}{%- endif -%}
+            {%- endif -%}
+            {%- if body != blank -%}
+              <details {{ block.shopify_attributes }}><summary>{{ block.settings.title }}{% render 'icon', name: 'chevron' %}</summary><div class="rte">{{ body }}</div></details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.show_recommendations -%}
+  <section class="section" data-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4">
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <div class="container">
+        <div class="section-head"><div><p class="kicker">قد يعجبكِ أيضًا</p><h2 class="section-title">منتجات مكمّلة</h2></div></div>
+        <div class="product-grid product-grid--4">{%- for rec in recommendations.products -%}{% render 'product-card', product: rec, index: forloop.index, section_id: section.id %}{%- endfor -%}</div>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "صفحة المنتج",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "عرض اسم الماركة", "default": true },
+    { "type": "text", "id": "shipping_note", "label": "ملاحظة التوصيل", "default": "يصلكِ طلبكِ خلال ٢ إلى ٧ أيام عمل، ولا تزيد مدة التوصيل عن أسبوع. تظهر تكلفة الشحن النهائية في صفحة الدفع." },
+    { "type": "checkbox", "id": "show_recommendations", "label": "عرض المنتجات المقترحة", "default": true }
+  ],
+  "blocks": [
+    { "type": "detail", "name": "قسم تفاصيل", "settings": [
+      { "type": "text", "id": "title", "label": "العنوان", "default": "طريقة الاستخدام" },
+      { "type": "text", "id": "metafield_key", "label": "مفتاح الحقل الإضافي (مثال custom.how_to_use)" },
+      { "type": "richtext", "id": "content", "label": "محتوى احتياطي" }
+    ]}
+  ]
+}
+{% endschema %}

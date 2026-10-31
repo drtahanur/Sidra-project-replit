@@ -1,0 +1,25 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Sidra Pearl & Berry",
+    "theme_version": "1.0.0",
+    "theme_author": "Sidra",
+    "theme_documentation_url": "https://help.shopify.com/ar/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/ar"
+  },
+  {
+    "name": "هوية سدرة",
+    "settings": [
+      { "type": "paragraph", "content": "هوية سدرة تعتمد على شعار عربي وألوان اللؤلؤ والتوت. الألوان الأساسية ثابتة في ملفات التصميم للحفاظ على الاتساق." },
+      { "type": "image_picker", "id": "logo", "label": "شعار بديل (اختياري)" },
+      { "type": "image_picker", "id": "favicon", "label": "أيقونة المتجر" },
+      { "type": "text", "id": "brand_tagline", "label": "وصف العلامة", "default": "جمالكِ، بتفاصيل تستحق العناية." },
+      { "type": "url", "id": "social_instagram_link", "label": "رابط إنستغرام" },
+      { "type": "url", "id": "social_tiktok_link", "label": "رابط تيك توك" },
+      { "type": "url", "id": "social_snapchat_link", "label": "رابط سناب شات" },
+      { "type": "text", "id": "support_whatsapp_number", "label": "رقم واتساب الدعم الفني (بصيغة دولية بدون + أو أصفار)", "default": "966500000000", "info": "رقم تجريبي مؤقت — استبدليه برقمكِ الحقيقي." },
+      { "type": "text", "id": "support_whatsapp_display", "label": "الرقم كما يظهر للعملاء", "default": "+966 50 000 0000" },
+      { "type": "checkbox", "id": "show_cart_note", "label": "السماح بملاحظة للطلب", "default": true }
+    ]
+  }
+]

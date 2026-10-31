@@ -1,0 +1,46 @@
+{%- assign b = section.settings.blog -%}
+{%- if b != blank and b.articles_count > 0 or request.design_mode -%}
+<section class="section journal">
+  <div class="container">
+    <div class="section-head">
+      <div>{%- if section.settings.kicker != blank -%}<p class="kicker">{{ section.settings.kicker }}</p>{%- endif -%}<h2 class="section-title">{{ section.settings.heading | default: b.title }}</h2></div>
+      {%- if b != blank -%}<a href="{{ b.url }}" class="link-arrow">كل المقالات{% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    </div>
+    {%- if b != blank and b.articles_count > 0 -%}
+      <div class="journal__grid">
+        {%- for article in b.articles limit: section.settings.limit -%}
+          <article class="article-card">
+            <a href="{{ article.url }}" class="article-card__media">
+              {%- if article.image -%}
+                {%- assign image_alt = article.image.alt | default: article.title -%}
+                {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400,600,900', sizes: '(min-width: 750px) 33vw, 100vw', alt: image_alt }}
+              {%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+            </a>
+            <div class="article-card__body">
+              {%- if article.tags.size > 0 -%}<p class="kicker kicker--plain">{{ article.tags.first }}</p>{%- endif -%}
+              <h3 class="article-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+              {%- if section.settings.show_excerpt -%}<p class="meta">{{ article.excerpt_or_content | strip_html | truncatewords: 20 }}</p>{%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="editor-note">محرر القالب فقط: اختاري مدونة تحتوي مقالات منشورة من إعداد «المدونة». لن يظهر القسم للزوار حتى ذلك.</div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "مجلة سدرة",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "عنوان صغير", "default": "مجلة سدرة" },
+    { "type": "text", "id": "heading", "label": "العنوان", "default": "نصائح هادئة للعناية والجمال" },
+    { "type": "blog", "id": "blog", "label": "المدونة" },
+    { "type": "range", "id": "limit", "label": "عدد المقالات", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "checkbox", "id": "show_excerpt", "label": "عرض المقتطف", "default": false }
+  ],
+  "presets": [{ "name": "مجلة سدرة" }]
+}
+{% endschema %}

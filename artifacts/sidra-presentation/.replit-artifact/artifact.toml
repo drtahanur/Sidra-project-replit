@@ -1,0 +1,28 @@
+kind = "slides"
+previewPath = "/sidra-presentation/"
+title = "عرض سدرة — Taha Mahmoud"
+description = "عرض عربي من ١٢ شريحة يشرح خصائص متجر سدرة للجمال، بتصميم بنفسجي وعناصر متنوعة لكل شريحة."
+version = "1.0.0"
+id = "artifacts/sidra-presentation"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/sidra-presentation/" ]
+localPort = 25681
+
+[services.development]
+run = "pnpm --filter @workspace/sidra-presentation run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sidra-presentation", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sidra-presentation/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25681"
+BASE_PATH = "/sidra-presentation/"

@@ -1,0 +1,28 @@
+{
+  "current": {
+    "show_cart_note": true,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "announcement": "اكتشفي اختياراتكِ المفضلة للجمال مع سدرة",
+          "menu": "main-menu",
+          "logo_height": 56,
+          "sticky": true
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "about": "<p>سدرة، اختيارات عربية للعناية بالبشرة والمكياج. جمالكِ، بتفاصيل تستحق العناية.</p>",
+          "show_payment": true
+        },
+        "blocks": {
+          "links": { "type": "menu", "settings": { "heading": "روابط تهمكِ", "menu": "footer" } }
+        },
+        "block_order": ["links"]
+      }
+    }
+  },
+  "presets": { "سدرة — اللؤلؤ والتوت": {} }
+}

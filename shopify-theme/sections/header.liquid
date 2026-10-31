@@ -1,0 +1,84 @@
+{%- assign logo_style = '--site-logo-height: ' | append: section.settings.logo_height | append: 'px' -%}
+{%- if section.settings.announcement != blank -%}
+  <div class="announcement">{% if section.settings.announcement_link != blank %}<a href="{{ section.settings.announcement_link }}">{{ section.settings.announcement }}</a>{% else %}{{ section.settings.announcement }}{% endif %}</div>
+{%- endif -%}
+<header class="site-header{% if section.settings.sticky %} site-header--sticky{% endif %}">
+  <div class="container site-header__bar">
+    <div class="site-header__start">
+      <button class="icon-btn hide-desktop" data-open-dialog="mobile-menu" aria-haspopup="dialog" aria-controls="mobile-menu" aria-label="القائمة">{% render 'icon', name: 'menu' %}</button>
+      <a href="{{ routes.root_url }}" class="site-logo" style="{{ logo_style }}" aria-label="{{ shop.name }} — الرئيسية">
+        {%- if section.settings.logo != blank -%}
+          {{ section.settings.logo | image_url: width: 240 | image_tag: alt: shop.name }}
+        {%- else -%}
+          <img src="{{ 'logo-header.svg' | asset_url }}" alt="{{ shop.name }}" width="76" height="63">
+        {%- endif -%}
+      </a>
+    </div>
+    <nav class="site-nav hide-mobile" aria-label="القائمة الرئيسية">
+      <ul>
+        {%- for link in section.settings.menu.links -%}
+          <li class="site-nav__item{% if link.links != blank %} has-sub{% endif %}">
+            <a href="{{ link.url }}" class="site-nav__link"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+            {%- if link.links != blank -%}
+              <div class="mega"><ul>
+                {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+              </ul></div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <div class="site-header__icons">
+      <a href="{{ routes.search_url }}" class="icon-btn" aria-label="البحث">{% render 'icon', name: 'search' %}</a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="icon-btn hide-small" aria-label="الحساب">{% render 'icon', name: 'user' %}</a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="icon-btn cart-btn" data-open-cart aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="السلة">
+        {% render 'icon', name: 'bag' %}
+        <span class="cart-count{% if cart.item_count == 0 %} is-empty{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<dialog id="mobile-menu" class="drawer drawer--right" aria-label="القائمة">
+  <div class="drawer__inner">
+    <div class="drawer__head">
+      <img src="{{ 'logo-header.svg' | asset_url }}" alt="{{ shop.name }}" width="64" height="53">
+      <form method="dialog"><button class="icon-btn" aria-label="إغلاق القائمة">{% render 'icon', name: 'close' %}</button></form>
+    </div>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-pill">
+      {% render 'icon', name: 'search' %}
+      <label for="MobileSearch" class="visually-hidden">البحث</label>
+      <input id="MobileSearch" type="search" name="q" placeholder="ابحثي عن منتج">
+      <input type="hidden" name="type" value="product">
+    </form>
+    <nav class="mobile-nav" aria-label="القائمة">
+      {%- for link in section.settings.menu.links -%}
+        {%- if link.links != blank -%}
+          <details><summary>{{ link.title }}{% render 'icon', name: 'chevron' %}</summary>
+            <ul><li><a href="{{ link.url }}">عرض الكل</a></li>{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+          </details>
+        {%- else -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if shop.customer_accounts_enabled -%}<a href="{{ routes.account_url }}">حسابي</a>{%- endif -%}
+    </nav>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "الهيدر",
+  "class": "section-header",
+  "settings": [
+    { "type": "text", "id": "announcement", "label": "نص شريط الإعلان", "default": "اكتشفي اختياراتكِ المفضلة للجمال مع سدرة" },
+    { "type": "url", "id": "announcement_link", "label": "رابط شريط الإعلان" },
+    { "type": "image_picker", "id": "logo", "label": "الشعار (اختياري — يُستخدم logo.svg افتراضيًا)" },
+    { "type": "range", "id": "logo_height", "label": "ارتفاع الشعار", "min": 40, "max": 64, "step": 2, "unit": "px", "default": 56 },
+    { "type": "link_list", "id": "menu", "label": "القائمة الرئيسية", "default": "main-menu" },
+    { "type": "checkbox", "id": "sticky", "label": "تثبيت الهيدر أثناء التمرير", "default": true }
+  ]
+}
+{% endschema %}
