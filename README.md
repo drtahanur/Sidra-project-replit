@@ -1,11 +1,14 @@
-# منحة لتعلّم Vibe Coding
+# تطبيق عملي لمنحة Vibecoding الخاصة بـ Nordpoints
 
 <p align="center">
-  <img src="docs/replit-logo.png" alt="Replit" width="200">
-  &nbsp;&nbsp;&nbsp;
   <a href="https://nordpoints.com">
     <img src="https://nordpoints.com/nordpoints-logo.svg" alt="Nordpoints" width="200">
   </a>
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/replit-logo.png" alt="Replit" width="200">
+</p>
+<p align="center">
+  <a href="https://nordpoints.com">Nordpoints.com</a>
 </p>
 
 # سدرة | تجربة جمال متكاملة
